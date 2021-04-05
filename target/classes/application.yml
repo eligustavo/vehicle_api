@@ -1,0 +1,14 @@
+server:
+  error:
+    include-stacktrace: never
+
+spring:
+  application:
+    name: vehicle-exam
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vehicle
+    username: postgres
+    password: abcd1234
+  jpa:
+    hibernate:
+      ddl-auto: update
