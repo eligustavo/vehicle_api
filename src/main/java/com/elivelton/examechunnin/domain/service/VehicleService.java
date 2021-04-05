@@ -1,16 +1,14 @@
 package com.elivelton.examechunnin.domain.service;
 
 import com.elivelton.examechunnin.api.exceptions.BadRequestException;
+import com.elivelton.examechunnin.api.exceptions.handler.BrandNotFoundException;
 import com.elivelton.examechunnin.api.exceptions.handler.VehicleAlreadyRegisteredException;
 import com.elivelton.examechunnin.domain.entity.Vehicle;
 import com.elivelton.examechunnin.domain.repository.VehicleRepository;
 import com.elivelton.examechunnin.dto.VehicleDTO;
 import com.elivelton.examechunnin.mapper.VehicleMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +28,10 @@ public class VehicleService {
                 .collect(Collectors.toList());
     }
 
-    public Page<Vehicle> listPageable(Pageable pageable) {
-        return vehicleRepository.findAll(pageable);
+    public VehicleDTO findByBrand(String brand) throws BrandNotFoundException {
+        Vehicle foundBrand = vehicleRepository.findByBrand(brand)
+                .orElseThrow(() -> new BrandNotFoundException(brand));
+        return vehicleMapper.toDTO(foundBrand);
     }
 
     public Vehicle findById(Long id) {
@@ -45,7 +45,8 @@ public class VehicleService {
         return vehicleMapper.toDTO(savedVehicle);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws BrandNotFoundException {
+        verifyIfExists(id);
         vehicleRepository.delete(findById(id));
     }
 
@@ -63,5 +64,9 @@ public class VehicleService {
         }
     }
 
+    public Vehicle verifyIfExists(Long id) throws BrandNotFoundException {
+        return vehicleRepository.findById(id)
+                .orElseThrow(() -> new BrandNotFoundException(id));
+    }
 
 }

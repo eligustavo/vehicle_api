@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -17,13 +16,15 @@ public class VehicleDTO {
 
     private Long id;
 
-    @NotBlank(message = "Este campo não pode ser nulo")
+    @NotNull
     private String vehicleType;
-    @NotBlank(message = "Este campo não pode ser nulo")
+    @NotNull
     private String model;
-    @NotBlank(message = "Este campo não pode ser nulo")
+    @NotNull
     private String brand;
+    @NotNull
     private Integer year;
+    @NotNull
     private BigDecimal price;
 
 }
