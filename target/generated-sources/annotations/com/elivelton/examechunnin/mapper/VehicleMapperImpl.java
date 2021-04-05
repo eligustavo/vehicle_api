@@ -1,14 +1,13 @@
 package com.elivelton.examechunnin.mapper;
 
 import com.elivelton.examechunnin.domain.entity.Vehicle;
-import com.elivelton.examechunnin.domain.entity.Vehicle.VehicleBuilder;
 import com.elivelton.examechunnin.dto.VehicleDTO;
 import com.elivelton.examechunnin.dto.VehicleDTO.VehicleDTOBuilder;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-05T10:05:35-0300",
+    date = "2021-04-05T13:59:44-0300",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class VehicleMapperImpl implements VehicleMapper {
@@ -19,16 +18,16 @@ public class VehicleMapperImpl implements VehicleMapper {
             return null;
         }
 
-        VehicleBuilder vehicle = Vehicle.builder();
+        Vehicle vehicle = new Vehicle();
 
-        vehicle.id( vehicleDTO.getId() );
-        vehicle.vehicleType( vehicleDTO.getVehicleType() );
-        vehicle.model( vehicleDTO.getModel() );
-        vehicle.brand( vehicleDTO.getBrand() );
-        vehicle.year( vehicleDTO.getYear() );
-        vehicle.price( vehicleDTO.getPrice() );
+        vehicle.setId( vehicleDTO.getId() );
+        vehicle.setVehicleType( vehicleDTO.getVehicleType() );
+        vehicle.setModel( vehicleDTO.getModel() );
+        vehicle.setBrand( vehicleDTO.getBrand() );
+        vehicle.setYear( vehicleDTO.getYear() );
+        vehicle.setPrice( vehicleDTO.getPrice() );
 
-        return vehicle.build();
+        return vehicle;
     }
 
     @Override

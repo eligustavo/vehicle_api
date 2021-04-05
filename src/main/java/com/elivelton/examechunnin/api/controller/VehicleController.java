@@ -25,6 +25,11 @@ public class VehicleController {
         return vehicleService.listAll();
     }
 
+    @GetMapping("/{brand}")
+    public VehicleDTO findByBrand(@PathVariable String brand) throws BrandNotFoundException {
+        return vehicleService.findByBrand(brand);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<Vehicle> findById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.findById(id));
