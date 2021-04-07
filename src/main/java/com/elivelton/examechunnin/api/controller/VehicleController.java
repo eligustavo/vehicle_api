@@ -2,7 +2,6 @@ package com.elivelton.examechunnin.api.controller;
 
 import com.elivelton.examechunnin.api.exceptions.handler.BrandNotFoundException;
 import com.elivelton.examechunnin.api.exceptions.handler.VehicleAlreadyRegisteredException;
-import com.elivelton.examechunnin.domain.entity.Vehicle;
 import com.elivelton.examechunnin.domain.service.VehicleService;
 import com.elivelton.examechunnin.dto.VehicleDTO;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +24,9 @@ public class VehicleController {
         return vehicleService.listAll();
     }
 
-    @GetMapping("/{brand}")
+    @GetMapping(path = "/{brand}")
     public VehicleDTO findByBrand(@PathVariable String brand) throws BrandNotFoundException {
         return vehicleService.findByBrand(brand);
-    }
-
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<Vehicle> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.findById(id));
     }
 
     @PostMapping
