@@ -7,15 +7,14 @@ import com.elivelton.examechunnin.domain.entity.Vehicle;
 import com.elivelton.examechunnin.domain.repository.VehicleRepository;
 import com.elivelton.examechunnin.dto.VehicleDTO;
 import com.elivelton.examechunnin.mapper.VehicleMapper;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.*;
@@ -94,6 +93,50 @@ class VehicleServiceTest {
 
         // then
         assertThrows(BrandNotFoundException.class, () -> vehicleService.findByBrand(expectedFoundVehicleDTO.getBrand()));
+    }
+
+    @Test
+    void whenListVehicleIsCalledThenReturnAListOfVehicles() {
+        // given
+        VehicleDTO expectedFoundVehicleDTO = VehicleDTOBuilder.builder().build().toVehicleDTO();
+        Vehicle expectedFoundVehicle = vehicleMapper.toModel(expectedFoundVehicleDTO);
+
+        //when
+        when(vehicleRepository.findAll()).thenReturn(Collections.singletonList(expectedFoundVehicle));
+
+        //then
+        List<VehicleDTO> foundListBeersDTO = vehicleService.listAll();
+
+        assertThat(foundListBeersDTO, is(not(empty())));
+        assertThat(foundListBeersDTO.get(0), is(equalTo(expectedFoundVehicleDTO)));
+    }
+
+    @Test
+    void whenListVehicleIsCalledThenReturnAnEmptyListOfVehicles() {
+        //when
+        when(vehicleRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+
+        //then
+        List<VehicleDTO> foundListVehiclesDTO = vehicleService.listAll();
+
+        assertThat(foundListVehiclesDTO, is(empty()));
+    }
+
+    @Test
+    void whenExclusionIsCalledWithValidIdThenABeerShouldBeDeleted() throws BrandNotFoundException {
+        // given
+        VehicleDTO expectedDeletedVehicleDTO = VehicleDTOBuilder.builder().build().toVehicleDTO();
+        Vehicle expectedDeletedVehicle = vehicleMapper.toModel(expectedDeletedVehicleDTO);
+
+        // when
+        when(vehicleRepository.findById(expectedDeletedVehicleDTO.getId())).thenReturn(Optional.of(expectedDeletedVehicle));
+        doNothing().when(vehicleRepository).deleteById(expectedDeletedVehicle.getId());
+
+        // then
+        vehicleService.delete(expectedDeletedVehicleDTO.getId());
+
+        verify(vehicleRepository, times(1)).findById(expectedDeletedVehicleDTO.getId());
+        verify(vehicleRepository, times(1)).deleteById(expectedDeletedVehicleDTO.getId());
     }
 
 }

@@ -47,7 +47,7 @@ public class VehicleService {
 
     public void delete(Long id) throws BrandNotFoundException {
         verifyIfExists(id);
-        vehicleRepository.delete(findById(id));
+        vehicleRepository.deleteById(id);
     }
 
     public void replace(VehicleDTO vehicleDTO) {
